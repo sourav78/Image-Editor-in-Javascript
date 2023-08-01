@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iamge Editor</title>
+    <link rel="shortcut icon" href="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_94d9b7cbd4bb4ab524b243151a45b332/foxit-pdf-editor.png" type="image/x-icon">
+    <link rel="stylesheet" href="editing.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <main>
+        <div class="header">
+            <h1>Image Editor</h1>
+        </div>
+        <div class="edit-section">
+            <div class="editor">
+                <div class="slider-cont">
+                    <label for="blur">Blur:</label>
+                    <input type="range" class="slider" value="0" min="0" max="100" id="blur" >
+                    <span class="result" id="blur-val">0%</span>  
+                </div>
+                <div class="slider-cont">
+                    <label for="blur">Brightness:</label>
+                    <input type="range" class="slider" value="0" min="0" max="100" id="brightness">
+                    <span class="result" id="brightness-val">100%</span>  
+                </div>
+                <div class="slider-cont">
+                    <label for="contrast">Contrast:</label>
+                    <input type="range" class="slider" value="100" min="0" max="999" id="contrast">
+                    <span class="result" id="contrast-val">100%</span>  
+                </div>
+                <div class="slider-cont">
+                    <label for="grayscale">Gray Scale:</label>
+                    <input type="range" class="slider" value="0" min="0" max="100" id="grayscale">
+                    <span class="result" id="grayscale-val">0%</span>  
+                </div>
+                <div class="slider-cont">
+                    <label for="huerotate">Hue:</label>
+                    <input type="range" class="slider" value="0" min="0" max="360" id="huerotate">
+                    <span class="result" id="huerotate-val">0</span>  
+                </div>
+                <div class="slider-cont">
+                    <label for="invert">Invert:</label>
+                    <input type="range" class="slider" value="0" min="0" max="100" id="invert">
+                    <span class="result" id="invert-val">0%</span>  
+                </div>
+                <div class="slider-cont">
+                    <label for="opacity">Opacity:</label>
+                    <input type="range" class="slider" value="0" min="0" max="100" id="opacity">
+                    <span class="result" id="opacity-val">100%</span>  
+                </div>
+                <div class="slider-cont">
+                    <label for="saturation">Saturation:</label>
+                    <input type="range" class="slider" value="0" min="0" max="100" id="saturation">
+                    <span class="result" id="saturation-val">100%</span>  
+                </div>
+                <div class="slider-cont">
+                    <label for="sepia">Sepia:</label>
+                    <input type="range" class="slider" value="0" min="0" max="100" id="sepia">
+                    <span class="result" id="sepia-val">0%</span>  
+                </div>
+            </div>
+            <div class="editing-section">
+                <div class="file-section">
+                    <div class="file-choose">
+                        <input type="file" name="" id="img-selector" accept="image/*">
+                        <label for="img-selector"><i class="fa-regular fa-image" style="color: #ffffff;"></i> Choose a Photo</label>
+                    </div>
+                    <a id="download">Downlaod</a>
+                </div>
+                <div class="image-show">
+                    <img id="img-src">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://kit.fontawesome.com/3901db8efc.js" crossorigin="anonymous"></script>
+</body>
+
+<script>
+    let blurSlider = document.getElementById("blur")
+    let brightnessSlider = document.getElementById("brightness")
+    let contrastSlider = document.getElementById("contrast")
+    let grayscaleSlider = document.getElementById("grayscale")
+    let huerotateSlider = document.getElementById("huerotate")
+    let invertSlider = document.getElementById("invert")
+    let opacitySlider = document.getElementById("opacity")
+    let saturationSlider = document.getElementById("saturation")
+    let sepiaSlider = document.getElementById("sepia")
+
+
+    let blurResult = document.getElementById("blur-val")
+    let brightnessResult = document.getElementById("brightness-val")
+    let contrastResult = document.getElementById("contrast-val")
+    let grayscaleResult = document.getElementById("grayscale-val")
+    let huerotateResult = document.getElementById("huerotate-val")
+    let invertResult = document.getElementById("invert-val")
+    let opacityResult = document.getElementById("opacity-val")
+    let saturationResult = document.getElementById("saturation-val")
+    let sepiaResult = document.getElementById("sepia-val")
+
+    let imgSelector = document.getElementById("img-selector")
+    let displayImage = document.getElementById("img-src")
+
+    function changeBackground(sliderName){
+        let val = sliderName.value
+        sliderName.style.background = `linear-gradient(90deg, #0fd009 ${val}%, #fff ${val}%)`
+    }
+
+
+
+    imgSelector.addEventListener("change", (event) => {
+        if(event.target.files.length == 0){
+            return
+        }
+
+        let imgSrc = URL.createObjectURL(event.target.files[0])
+        displayImage.setAttribute("src", imgSrc)
+    })
+
+    blurSlider.addEventListener("input", (e) => {
+        changeBackground(blurSlider)
+        blurResult.innerText = `${blurSlider.value}%`
+
+        displayImage.style.filter = `blur(${blurSlider.value}px)`
+    })
+
+    brightnessSlider.addEventListener("input", (e) => {
+        changeBackground(brightnessSlider)
+        brightnessResult.innerText = `${100-Number(brightnessSlider.value)}%`
+        displayImage.style.filter = `brightness(${100-Number(brightnessSlider.value)}%)`
+    })
+
+    contrastSlider.addEventListener("input", (e) => {
+        // changeBackground(contrastSlider)
+        let val = Number(contrastSlider.value)
+        console.log(val);
+        contrastSlider.style.background = `linear-gradient(90deg, #0fd009 ${val/10}%, #fff ${val/10}%)`
+
+        contrastResult.innerText = `${contrastSlider.value}%`
+        displayImage.style.filter = `contrast(${contrastSlider.value}%)`
+    })
+
+    grayscaleSlider.addEventListener("input", (e) => {
+        changeBackground(grayscaleSlider)
+        grayscaleResult.innerText = `${grayscaleSlider.value}%`
+
+        displayImage.style.filter = `grayscale(${grayscaleSlider.value}%)`
+    })
+    
+    huerotateSlider.addEventListener("input", (e) => {
+        changeBackground(huerotateSlider)
+        huerotateResult.innerText = `${huerotateSlider.value}`
+        displayImage.style.filter = `hue-rotate(${huerotateSlider.value}deg)`
+    })
+    
+    invertSlider.addEventListener("input", (e) => {
+        changeBackground(invertSlider)
+        invertResult.innerText = `${invertSlider.value}%`
+        displayImage.style.filter = `invert(${invertSlider.value}%)`
+    })
+    
+    opacitySlider.addEventListener("input", (e) => {
+        changeBackground(opacitySlider)
+        opacityResult.innerText = `${100-Number(opacitySlider.value)}%`
+        displayImage.style.filter = `opacity(${100-Number(opacitySlider.value)}%)`
+    })
+    
+    saturationSlider.addEventListener("input", (e) => {
+        changeBackground(saturationSlider)
+        saturationResult.innerText = `${100-Number(saturationSlider.value)}%`
+        displayImage.style.filter = `saturate(${100-Number(saturationSlider.value)}%)`
+    })
+    
+    sepiaSlider.addEventListener("input", (e) => {
+        changeBackground(sepiaSlider)
+        sepiaResult.innerText = `${sepiaSlider.value}%`
+        displayImage.style.filter = `sepia(${sepiaSlider.value}%)`
+    })
+</script>
+
+</html>
