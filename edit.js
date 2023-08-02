@@ -1,6 +1,6 @@
 //lolu
 
-let blurSlider = document.getElementById("blur")
+    let blurSlider = document.getElementById("blur")
     let brightnessSlider = document.getElementById("brightness")
     let contrastSlider = document.getElementById("contrast")
     let grayscaleSlider = document.getElementById("grayscale")
@@ -23,6 +23,7 @@ let blurSlider = document.getElementById("blur")
 
     let imgSelector = document.getElementById("img-selector")
     let displayImage = document.getElementById("img-src")
+    let saveImage = document.getElementById("download")
 
     function changeBackground(sliderName){
         let val = sliderName.value
@@ -126,4 +127,22 @@ let blurSlider = document.getElementById("blur")
 
         filterValue[8] = sepiaSlider.value
         displayImage.style.filter = `blur(${filterValue[0]}px) brightness(${filterValue[1]}%) contrast(${filterValue[2]}%) grayscale(${filterValue[3]}%) hue-rotate(${filterValue[4]}deg) invert(${filterValue[5]}%) opacity(${filterValue[6]}%) saturate(${filterValue[7]}%) sepia(${filterValue[8]}%)`
+    })
+
+    saveImage.addEventListener("click", ()=>{
+        const canvas = document.createElement("canvas")
+        const ctx = canvas.getContext("2d")
+        canvas.width = displayImage.naturalWidth
+        canvas.height = displayImage.naturalHeight
+
+        ctx.filter = `blur(${filterValue[0]}px) brightness(${filterValue[1]}%) contrast(${filterValue[2]}%) grayscale(${filterValue[3]}%) hue-rotate(${filterValue[4]}deg) invert(${filterValue[5]}%) opacity(${filterValue[6]}%) saturate(${filterValue[7]}%) sepia(${filterValue[8]}%)`
+        // ctx.translate(canvas.width / 2, canvas.height / 2)
+        ctx.drawImage(displayImage, 0, 0, canvas.width, canvas.height)
+
+        
+        let randomNum = Math.floor(Math.random()*10000+10000)
+        const link = document.createElement("a")
+        link.download = `imageeditor${randomNum}.jpg`
+        link.href = canvas.toDataURL()
+        link.click()
     })
